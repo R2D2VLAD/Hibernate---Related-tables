@@ -10,6 +10,10 @@ public class Emploee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
     @Basic
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstname;
@@ -22,25 +26,25 @@ public class Emploee {
     @Basic
     @Column(name = "age", nullable = false)
     private int age;
-    @Basic
-    @Column(name = "city_id", nullable = false)
-    private int cityId;
 
-    public Emploee(int id, String firstname, String lastname, String gender, int age, int cityId) {
+    public Emploee(int id, String firstname, String lastname, String gender, int age) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
     }
 
-    public Emploee(String firstname, String lastname, String gender, int age, int city_id) {
+    public Emploee(String firstname, String lastname, String gender, int age, City city) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.gender = gender;
         this.age = age;
-        this.cityId = city_id;
+        this.city = city;
+    }
+
+    public Emploee(int id) {
+        this.id = id;
     }
 
     public Emploee() {
@@ -87,12 +91,13 @@ public class Emploee {
         this.age = age;
     }
 
-    public int getCityId() {
-        return cityId;
+
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
@@ -100,12 +105,12 @@ public class Emploee {
         if (this == o) return true;
         if (!(o instanceof Emploee)) return false;
         Emploee emploee = (Emploee) o;
-        return age == emploee.age && firstname.equals(emploee.firstname) && lastname.equals(emploee.lastname) && gender.equals(emploee.gender) && cityId == emploee.cityId;
+        return age == emploee.age && firstname.equals(emploee.firstname) && lastname.equals(emploee.lastname) && gender.equals(emploee.gender) && city == emploee.city;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, lastname, gender, age, cityId);
+        return Objects.hash(firstname, lastname, gender, age, city);
     }
 
     @Override
@@ -115,7 +120,7 @@ public class Emploee {
                 ", lastname='" + lastname + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", cityId=" + cityId +
+                ", city_id=" + city +
                 '}';
     }
 }
